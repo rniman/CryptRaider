@@ -23,7 +23,7 @@ Content/
 
 To run or develop the project as intended, please download and apply the following external asset manually:
 
-- **Medieval Dungeon**: [Mansion: Free Environment Set](https://www.fab.com/ko/listings/c13bd0dc-ac4d-4595-b284-f81386b2e6ef)
+- **Asset Name**: [Medieval Dungeon](https://www.fab.com/ko/listings/c13bd0dc-ac4d-4595-b284-f81386b2e6ef)
 - **Source**: Fab Marketplace
 - **Usage**: Place the downloaded content inside the `Content/` folder (outside of `MyProjectContent/`) as appropriate.
 
@@ -31,7 +31,7 @@ To run or develop the project as intended, please download and apply the followi
 
 1. Clone this repository:
    ```bash
-   git clone <your-repo-url>
+   git clone https://github.com/rniman/CryptRaider.git
    ```
 
 2. Open the `.uproject` file in Unreal Engine.
