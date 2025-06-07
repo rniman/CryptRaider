@@ -3,6 +3,7 @@
 
 #include "Grabber.h"
 #include "Engine/World.h"
+#include "PhysicsEngine/PhysicsHandleComponent.h"
 
 // Sets default values for this component's properties
 UGrabber::UGrabber()
@@ -20,19 +21,32 @@ void UGrabber::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// ...
-	
+	UPhysicsHandleComponent* PhysicsHandle = GetOwner()->FindComponentByClass<UPhysicsHandleComponent>();
+	if(PhysicsHandle)
+	{
+		UE_LOG(LogTemp, Display, TEXT("Got Physics Handle: %s"), *PhysicsHandle->GetName());
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("No Physics Handle Found!"));		
+	}
 }
-
 
 // Called every frame
 void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
+}
+
+void UGrabber::Grab()
+{
+	UE_LOG(LogTemp, Display, TEXT("Grab"));
+
 	FVector Start = GetComponentLocation();
 	FVector End = Start + GetForwardVector() * MaxGrabDistance;
 	DrawDebugLine(GetWorld(), Start, End, FColor::Red, false);
+	DrawDebugSphere(GetWorld(), End, 10.0f, 10, FColor::Blue, false, 5.0f);
 
 	FCollisionShape Sphere = FCollisionShape::MakeSphere(GrabRadius);
 	FHitResult HitResult;
@@ -47,17 +61,16 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 
 	if(HasHit)
 	{
-		UE_LOG(LogTemp, Display, TEXT("Hit Result: %s"), *HitResult.GetActor()->GetActorNameOrLabel());
+		DrawDebugSphere(GetWorld(), HitResult.Location, 10.0f, 10, FColor::Green, false, 5.0f);
+		DrawDebugSphere(GetWorld(), HitResult.ImpactPoint, 10.0f, 10, FColor::Purple, false, 5.0f);
+
+		AActor* HitActor = HitResult.GetActor();
+		UE_LOG(LogTemp, Display, TEXT("Hit Result: %s"), *HitActor->GetActorNameOrLabel());
 	}
 	else
 	{
 		UE_LOG(LogTemp, Display, TEXT("Hit Nothing!"));
 	}		
-}
-
-void UGrabber::Grab()
-{
-	UE_LOG(LogTemp, Display, TEXT("Grab"));
 }
 
 void UGrabber::Release()
