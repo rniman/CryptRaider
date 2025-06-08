@@ -4,8 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "Components/SceneComponent.h"
+#include "PhysicsEngine/PhysicsHandleComponent.h"
 #include "Grabber.generated.h"
-
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class CRYPTRAIDER_API UGrabber : public USceneComponent
@@ -35,4 +35,9 @@ private:
 
 	UPROPERTY(EditAnyWhere)
 	float GrabRadius = 100.f;
+
+	UPROPERTY(EditAnyWhere)
+	float HoldDistance = 200.0f;
+
+	UPhysicsHandleComponent* GetPhysicsHandle() const;
 };
