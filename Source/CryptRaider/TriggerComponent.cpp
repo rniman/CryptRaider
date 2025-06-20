@@ -19,27 +19,33 @@ void UTriggerComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAct
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-    //UE_LOG(LogTemp, Display, TEXT("Trigger Component Is Ticking"));
+	if(GetAcceptableActor() != nullptr)
+	{
+		Mover->SetShouldMove(true);
+	}
+	else
+	{
+		Mover->SetShouldMove(false);
+	}
+}
 
+void UTriggerComponent::SetMover(UMover* NewMover)
+{
+	Mover = NewMover;
+}
+
+AActor* UTriggerComponent::GetAcceptableActor() const
+{
 	TArray<AActor*> Actors;
 	GetOverlappingActors(Actors);
 
-	// int32 index = 0;
-	// while(index < Actors.Num())
-	// {
-	// 	FString ActorName = Actors[index]->GetActorNameOrLabel();
-	// 	UE_LOG(LogTemp, Display, TEXT("Overlapping: %s"), *ActorName); 
-	// 	++index;
-	// }
-	// for (int32 i = 0; i < Actors.Num(); ++i)
-	// {
-	// 	FString ActorName = Actors[i]->GetActorNameOrLabel();
-	// 	UE_LOG(LogTemp, Display, TEXT("Overlapping: %s"), *ActorName); 
-	// }
-
 	for(AActor* Actor: Actors)
 	{
-		FString ActorName = Actor->GetActorNameOrLabel();
-		UE_LOG(LogTemp, Display, TEXT("Overlapping: %s"), *ActorName); 
+		if(Actor->ActorHasTag(AcceptableActorTag))
+		{
+			return Actor;
+		}
 	}
+
+	return nullptr;
 }
